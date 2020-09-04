@@ -1,0 +1,131 @@
+#include<iostream>
+
+using namespace std;
+
+bool RowWin(int Long,char Player,int x,int y,char map[19][19])
+{
+    int Connect=1;
+    for(int i=1;;i++)
+    {
+        if(map[y+i][x]==Player) Connect++;
+        else break;
+}
+for(int i=1;;i++)
+{
+    if(map[y-i][x]==Player) Connect++;
+    else break;
+}
+if(Connect>=Long) return true;
+else return false;
+}
+//程式分割線--------------------------------------------------
+bool ColWin(int Long,char Player,int x,int y,char map[19][19])
+{
+    int Connect=1;
+    for(int i=1;;i++)
+    {
+        if(map[y][x+i]==Player) Connect++;
+        else break;
+    }
+    for(int i=1;;i++)
+    {
+        if(map[y][x-i]==Player) Connect++;
+        else break;
+    }
+if(Connect>=Long) return true;
+else return false;
+}
+//程式分割線--------------------------------------------------
+bool ObliWin1(int Long,char Player,int x,int y,char map[19][19])
+{
+    int Connect=1;
+    for(int i=1;;i++){
+        if(map[y+i][x+i]==Player) Connect++;
+        else break;
+    }
+    for(int i=1;;i++){
+        if(map[y-i][x-i]==Player) Connect++;
+        else break;
+    }
+    if(Connect>=Long) return true;
+    else return false;
+}
+//程式分割線--------------------------------------------------
+bool ObliWin2(int Long,char Player,int x,int y,char map[19][19])
+{
+    int Connect=1;
+    for(int i=1;;i++){
+        if(map[y+i][x-i]==Player) Connect++;
+        else break;
+    }
+    for(int i=1;;i++){
+        if(map[y-i][x+i]==Player) Connect++;
+        else break;
+    }
+    if(Connect>=Long) return true;
+    else return false;
+}
+//程式分割線--------------------------------------------------
+bool winner(int Long,char Player,int x,int y,char map[19][19])
+{
+    if(ColWin(Long,Player,x,y,map)==true||RowWin(Long,Player,x,y,map)==true||ObliWin1(Long,Player,x,y,map)==true||ObliWin2(Long,Player,x,y,map)==true) return true;
+        else return false;
+}
+//程式分割線--------------------------------------------------
+bool TFset(char Player,int XSwitch,int YSwitch,char map[19][19]){
+    if(XSwitch>=0 && XSwitch<19 && YSwitch>=0 && YSwitch<19 && map[YSwitch][XSwitch]==' ')
+    {
+    map[YSwitch][XSwitch]=Player; return true;
+    }
+    else{ cout<<"按錯了你是目洨喔？"<<endl; return false;
+    }
+}
+//程式分割線--------------------------------------------------
+void show(char map[19][19])
+{
+    cout<<"  01  02  03  04  05  06  07  08  09  10  11  12  13  14  15  16  17  18  19"<<endl;
+    for(int i=18;i>=0;i--){
+        cout<<"－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－"<<endl;
+        if(i+1<10)
+            cout<<"0"<<i+1;
+        else
+            cout<<i+1;
+        for(int j=0;j<19;j++) {
+            cout<<"|";
+            cout<<" "<<map[i][j]<<" "; }
+            cout<<"|";
+        if(i+1<10)
+            cout<<"0"<<i+1<<endl;
+        else
+            cout<<i+1<<endl;
+}
+    cout<<"－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－"<<endl;
+    cout<<"  01  02  03  04  05  06  07  08  09  10  11  12  13  14  15  16  17  18  19"<<endl;
+}
+    int main(){
+        char map[19][19];
+        for(int i=0;i<19;i++)
+            for(int j=0;j<19;j++) map[i][j]=' ';
+        char Player='O';
+        int XSwitch,YSwitch;
+        show(map);
+        while(1){
+            cout<<"(Y軸：↑X軸：→ X、Y都按0時，程式退出)"<<endl;
+            cout<<"X:"; cin>>XSwitch;
+            cout<<"Y:"; cin>>YSwitch;
+            if(XSwitch==0&&YSwitch==0) break;
+            else{ XSwitch=XSwitch-1; YSwitch=YSwitch-1;
+                system("CLS");
+                bool TFSet=TFset(Player,XSwitch,YSwitch,map);
+                show(map);
+                if(winner(5,Player,XSwitch,YSwitch,map)==true) {
+                    cout<<Player<<" 獲勝。\n";
+                    break;
+                }
+                if(TFSet==true){
+                    if(Player=='O') Player='@';
+                    else Player='O';
+                }
+            }
+        }
+}
